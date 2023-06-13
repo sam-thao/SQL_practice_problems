@@ -57,8 +57,8 @@ where id % 2 = 0;
 -- Question
 Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
 
-select count(city) - distinct(count(city))
-from station
+select count(city) - count(distinct city)
+from station;
 
 using count() to figure out how many cities are in table vs count() & distinct
 
