@@ -187,3 +187,33 @@ Query the difference between the maximum and minimum populations in CITY.
 select (max(population) - min(population)) as population_difference
 from city
 
+-- The Blunder
+Samantha was tasked with calculating the average monthly salaries for all employees in the EMPLOYEES table, but did not realize her keyboard's key was broken until after completing the calculation. 
+She wants your help finding the difference between her miscalculation (using salaries with any zeros removed), and the actual average salary.
+
+Write a query calculating the amount of error (i.e.:  actual - miscalculated average monthly salaries), and round it up to the next integer.
+
+select ceiling
+(
+    avg(cast(salary as decimal)) - 
+    avg(
+        cast(
+            replace(salary,0,'') as decimal
+            )
+        )
+)
+from Employees
+
+-- Average Population of Each Continent
+Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+select co.continent, floor(avg(ci.population))
+from country co
+inner join city ci
+on co.code = ci.countrycode
+group by co.continent
+
+
+
