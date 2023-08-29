@@ -8,3 +8,16 @@ select firstName, lastName, city, state
 from Person
 left join address
 on Person.personID = Address.personID;
+
+
+181. Employees Earning More Than Their Managers
+
+Write a solution to find the employees who earn more than their managers.
+Return the result table in any order.
+The result format is in the following example.
+
+select e1.name as Employee
+from Employee e1
+left join Employee e2
+on e1.managerId = e2.id
+where e1.salary > e2.salary
