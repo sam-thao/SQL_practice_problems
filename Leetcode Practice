@@ -39,3 +39,67 @@ select email
 from Person
 group by email
 having count(email) > 1;
+
+
+183. Customers Who Never Order
+
+Write a solution to find all customers who never order anything.
+Return the result table in any order.
+The result format is in the following example.
+
+select c.name as Customers
+from Customers c
+left join Orders o
+on c.id = o.customerId
+where o.id is null
+
+select c.name as Customers
+from Customer c
+where c.name not in
+(select c.name
+from Customers c
+left join Orders o
+on c.id = o.customerId
+where c.id = o.customerId)
+
+
+577. Employee Bonus
+
+Write an SQL query to report the name and bonus amount of each employee with a bonus less than 1000.
+Return the result table in any order.
+The query result format is in the following example.
+
+ELECT e.name, b.bonus
+FROM Employee e
+LEFT JOIN Bonus b
+ON e.empId = b.empId
+WHERE b.bonus < 1000
+OR b.bonus IS NULL
+
+
+584. Find Customer Referee
+
+Find the names of the customer that are not referred by the customer with id = 2.
+Return the result table in any order.
+The result format is in the following example.
+
+SELECT name
+FROM Customer
+WHERE referee_id IS NULL
+OR referee_id < 2
+
+586. Customer Placing the Largest Number of Orders
+
+Write a solution to find the customer_number for the customer who has placed the largest number of orders.
+The test cases are generated so that exactly one customer will have placed more orders than any other customer.
+The result format is in the following example.
+
+SELECT customer_number
+FROM Orders
+GROUP BY customer_number
+ORDER BY COUNT(order_number) DESC
+LIMIT 1
+
+
+ 
+
