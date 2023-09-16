@@ -154,5 +154,19 @@ FROM Employee
 ORDER BY Salary DESC
 LIMIT 1 OFFSET 1
 
- 
+619. Biggest Single Number
+
+A single number is a number that appeared only once in the MyNumbers table.
+Find the largest single number. If there is no single number, report null.
+The result format is in the following example.
+
+WITH cte AS 
+(SELECT num
+FROM MyNumbers
+GROUP BY num
+HAVING COUNT(num) = 1)
+
+SELECT CASE WHEN COUNT(*) > 0 THEN MAX(num)
+ELSE NULL END AS num
+FROM cte
 
