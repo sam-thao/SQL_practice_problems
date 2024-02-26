@@ -31,17 +31,10 @@ Write a solution to report all the duplicate emails. Note that it's guaranteed t
 Return the result table in any order.
 The result format is in the following example.
 
-
-182. Duplicate Emails
-
-Write a solution to report all the duplicate emails. Note that it's guaranteed that the email field is not NULL.
-Return the result table in any order.
-The result format is in the following example.
-
-select email
-from Person
-group by email
-having count(email) > 1;
+SELECT email
+FROM   person
+GROUP  BY email
+HAVING Count(email) > 1; 
 
 
 183. Customers Who Never Order
@@ -50,20 +43,19 @@ Write a solution to find all customers who never order anything.
 Return the result table in any order.
 The result format is in the following example.
 
-select c.name as Customers
-from Customers c
-left join Orders o
-on c.id = o.customerId
-where o.id is null
+SELECT c.NAME AS Customers
+FROM   customers c
+       LEFT JOIN orders o
+              ON c.id = o.customerid
+WHERE  o.id IS NULL
 
-select c.name as Customers
-from Customer c
-where c.name not in
-(select c.name
-from Customers c
-left join Orders o
-on c.id = o.customerId
-where c.id = o.customerId)
+SELECT c.NAME AS Customers
+FROM   customer c
+WHERE  c.NAME NOT IN (SELECT c.NAME
+                      FROM   customers c
+                             LEFT JOIN orders o
+                                    ON c.id = o.customerid
+                      WHERE  c.id = o.customerid) 
 
 
 577. Employee Bonus
@@ -72,12 +64,13 @@ Write an SQL query to report the name and bonus amount of each employee with a b
 Return the result table in any order.
 The query result format is in the following example.
 
-ELECT e.name, b.bonus
-FROM Employee e
-LEFT JOIN Bonus b
-ON e.empId = b.empId
-WHERE b.bonus < 1000
-OR b.bonus IS NULL
+SELECT e.NAME,
+       b.bonus
+FROM   employee e
+       LEFT JOIN bonus b
+              ON e.empid = b.empid
+WHERE  b.bonus < 1000
+        OR b.bonus IS NULL; 
 
 
 584. Find Customer Referee
@@ -97,11 +90,10 @@ Write a solution to find the customer_number for the customer who has placed the
 The test cases are generated so that exactly one customer will have placed more orders than any other customer.
 The result format is in the following example.
 
-SELECT customer_number
-FROM Orders
-GROUP BY customer_number
-ORDER BY COUNT(order_number) DESC
-LIMIT 1
+SELECT NAME
+FROM   customer
+WHERE  referee_id IS NULL
+        OR referee_id < 2 
 
 
 595. Big Countries
@@ -114,10 +106,12 @@ Write a solution to find the name, population, and area of the big countries.
 
 Return the result table in any order.
 
-SELECT name, population, area
-FROM World
-WHERE area >= 3000000
-OR population >= 25000000;
+SELECT NAME,
+       population,
+       area
+FROM   world
+WHERE  area >= 3000000
+        OR population >= 25000000; 
 
 596. Classes More Than 5 Students
 
@@ -126,9 +120,9 @@ Write a solution to find all the classes that have at least five students.
 Return the result table in any order.
 
 SELECT class
-FROM Courses
-GROUP BY class
-HAVING COUNT(student) >= 5
+FROM   courses
+GROUP  BY class
+HAVING Count(student) >= 5; 
 
 610. Triangle Judgement
 
@@ -136,11 +130,14 @@ Report for every three line segments whether they can form a triangle.
 
 Return the result table in any order.
 
-SELECT *, 
-  CASE WHEN x+y>z AND y+z>x AND x+z>y THEN 'Yes'
-  ELSE 'No' 
-  END AS Triangle
-FROM Triangle
+SELECT *,
+       CASE
+         WHEN x + y > z
+              AND y + z > x
+              AND x + z > y THEN 'Yes'
+         ELSE 'No'
+       END AS Triangle
+FROM   triangle;
 
 
 176. Second Highest Salary
@@ -149,13 +146,14 @@ Write a solution to find the second highest salary from the Employee table. If t
 
 SELECT MAX(Salary) AS SecondHighestSalary 
 FROM Employee
-WHERE Salary NOT IN (SELECT MAX(Salary) FROM Employee)
+WHERE Salary NOT IN (SELECT MAX(Salary) FROM Employee);
 
 --2ND SOLUTION, NOT FULLY CORRECT, NOT RETURNING NULL
-SELECT Salary AS SecondHighestSalary
-FROM Employee
-ORDER BY Salary DESC
-LIMIT 1 OFFSET 1
+
+SELECT salary AS SecondHighestSalary
+FROM   employee
+ORDER  BY salary DESC
+LIMIT  1 offset 1; 
 
 619. Biggest Single Number
 
@@ -163,15 +161,16 @@ A single number is a number that appeared only once in the MyNumbers table.
 Find the largest single number. If there is no single number, report null.
 The result format is in the following example.
 
-WITH cte AS 
-(SELECT num
-FROM MyNumbers
-GROUP BY num
-HAVING COUNT(num) = 1)
-
-SELECT CASE WHEN COUNT(*) > 0 THEN MAX(num)
-ELSE NULL END AS num
-FROM cte
+WITH cte
+     AS (SELECT num
+         FROM   mynumbers
+         GROUP  BY num
+         HAVING Count(num) = 1)
+SELECT CASE
+         WHEN Count(*) > 0 THEN Max(num)
+         ELSE NULL
+       END AS num
+FROM   cte; 
 
 620. Not Boring Movies
 
@@ -180,10 +179,10 @@ Write a solution to report the movies with an odd-numbered ID and a description 
 Return the result table ordered by rating in descending order.
 
 SELECT *
-FROM Cinema
-WHERE id%2 = 1
-AND description <> 'boring'
-ORDER BY rating DESC;
+FROM   cinema
+WHERE  id%2 = 1
+       AND description <> 'boring'
+ORDER  BY rating DESC; 
 
 627. Swap Salary
 
@@ -192,8 +191,10 @@ Write a solution to swap all 'f' and 'm' values (i.e., change all 'f' values to 
 Note that you must write a single update statement, do not write any select statement for this problem.
 
 UPDATE salary
-SET sex = CASE WHEN sex = 'f' THEN 'm'
-WHEN sex = 'm' THEN 'f' END
+SET    sex = CASE
+               WHEN sex = 'f' THEN 'm'
+               WHEN sex = 'm' THEN 'f'
+             END; 
 
 1050. Actors and Directors Who Cooperated At Least Three Times
 
@@ -201,10 +202,12 @@ Write a solution to find all the pairs (actor_id, director_id) where the actor h
 
 Return the result table in any order.
 
-SELECT actor_id, director_id
-FROM ActorDirector
-GROUP BY actor_id, director_id
-HAVING COUNT(timestamp) >=3;
+SELECT actor_id,
+       director_id
+FROM   actordirector
+GROUP  BY actor_id,
+          director_id
+HAVING Count(timestamp) >= 3; 
 
 2/25/2024
 
