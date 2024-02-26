@@ -4,10 +4,13 @@ Write a solution to report the first name, last name, city, and state of each pe
 Return the result table in any order.
 The result format is in the following example.
 
-select firstName, lastName, city, state
-from Person
-left join address
-on Person.personID = Address.personID;
+SELECT firstname,
+       lastname,
+       city,
+       state
+FROM   person
+       LEFT JOIN address
+              ON person.personid = address.personid; 
 
 
 181. Employees Earning More Than Their Managers
@@ -16,11 +19,11 @@ Write a solution to find the employees who earn more than their managers.
 Return the result table in any order.
 The result format is in the following example.
 
-select e1.name as Employee
-from Employee e1
-left join Employee e2
-on e1.managerId = e2.id
-where e1.salary > e2.salary
+SELECT e1.NAME AS Employee
+FROM   employee e1
+       LEFT JOIN employee e2
+              ON e1.managerid = e2.id
+WHERE  e1.salary > e2.salary 
 
 182. Duplicate Emails
 
@@ -202,4 +205,38 @@ SELECT actor_id, director_id
 FROM ActorDirector
 GROUP BY actor_id, director_id
 HAVING COUNT(timestamp) >=3;
+
+2/25/2024
+
+1211. Queries Quality and Percentage
+
+Write a solution to find each query_name, the quality and poor_query_percentage.
+Both quality and poor_query_percentage should be rounded to 2 decimal places.
+Return the result table in any order.
+The result format is in the following example.
+
+WITH cte
+     AS (SELECT query_name,
+                rating / position AS ratio,
+                CASE
+                  WHEN rating < 3 THEN 1
+                  ELSE 0
+                END               AS quality_binary
+         FROM   queries)
+SELECT query_name,
+       Round(Avg(ratio), 2)                               AS quality,
+       Round(( Sum(quality_binary) / Count(*) ) * 100, 2) AS
+       poor_query_percentage
+FROM   cte
+GROUP  BY query_name 
+
+
+
+
+
+
+
+
+
+
 
